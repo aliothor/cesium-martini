@@ -1,0 +1,35 @@
+{
+  "name": "@aliothor/cesium-martini",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "types/index.d.ts",
+  "scripts": {
+    "build": "rimraf dist types && tsc && vite build"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "keywords": [
+    "cesium",
+    "martini",
+    "terrain",
+    "mapbox"
+  ],
+  "author": "aliothor",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/ndarray": "^1.0.13",
+    "@types/node": "^20.8.7",
+    "cesium": "^1.110.0",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.2.2",
+    "vite": "^4.5.0"
+  },
+  "dependencies": {
+    "ndarray": "^1.0.19"
+  }
+}
