@@ -1,11 +1,18 @@
 {
   "name": "@aliothor/cesium-martini",
   "version": "1.0.0",
-  "description": "",
+  "description": "Create cesium terrain through raster tile service",
   "type": "module",
-  "main": "dist/index.js",
+  "main": "dist/index.umd.cjs",
   "module": "dist/index.js",
   "types": "types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.umd.cjs",
+      "types": "./types/index.d.ts"
+    }
+  },
   "scripts": {
     "build": "rimraf dist types && tsc && vite build"
   },
