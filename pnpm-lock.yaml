@@ -14,11 +14,11 @@ devDependencies:
     specifier: ^1.0.13
     version: 1.0.13
   '@types/node':
-    specifier: ^20.8.7
-    version: 20.8.7
+    specifier: ^20.8.10
+    version: 20.8.10
   cesium:
-    specifier: ^1.110.0
-    version: 1.110.0
+    specifier: ^1.111.0
+    version: 1.111.0
   rimraf:
     specifier: ^5.0.5
     version: 5.0.5
@@ -27,12 +27,12 @@ devDependencies:
     version: 5.2.2
   vite:
     specifier: ^4.5.0
-    version: 4.5.0(@types/node@20.8.7)
+    version: 4.5.0(@types/node@20.8.10)
 
 packages:
 
-  /@cesium/engine@5.0.0:
-    resolution: {integrity: sha512-cN6jizJPScPc7CVtvWe5CQSUdfqOqkNzJX0Vu9JZjPsZSR06dr3YzG6SiE09dq/oZhP/T3zDz4CnyKouJDUCUA==}
+  /@cesium/engine@6.1.0:
+    resolution: {integrity: sha512-gufv2rfvbPVA3foYrMP+8RBOpH9z8zq6PaHqFOSCmNlRDPDsoAhsjGAog+sjFz1ybFiQ2/DY84YB/2cjs+DYxw==}
     engines: {node: '>=14.0.0'}
     dependencies:
       '@tweenjs/tween.js': 21.0.0
@@ -56,11 +56,11 @@ packages:
       urijs: 1.19.11
     dev: true
 
-  /@cesium/widgets@4.1.0:
-    resolution: {integrity: sha512-pFFUhB4/mPwoDI/wBV5ytDH+5JqHilA93174cYb/e2N2mha1/55GqDTnAm7eWfK0YF3ME/vRPNsgFKDTIsvZWQ==}
+  /@cesium/widgets@4.3.0:
+    resolution: {integrity: sha512-TZoJJJpv6Jp6bEl0t+nSQwGYvttp4RJbB6oYbtJPPqURz/JP/kYd+hAF+uV0DefRws3yl6waDDZ3Lrd09Ype4g==}
     engines: {node: '>=14.0.0'}
     dependencies:
-      '@cesium/engine': 5.0.0
+      '@cesium/engine': 6.1.0
       nosleep.js: 0.12.0
     dev: true
 
@@ -332,10 +332,10 @@ packages:
     resolution: {integrity: sha512-r0Sz7Veorh5Y/QZ444HXq/rQCkCbxEgDEJAVIFs6POI+CUhoH+FDPlGxI6KSK7WRQau30daaQ5Bzh7V16S5E+w==}
     dev: true
 
-  /@types/node@20.8.7:
-    resolution: {integrity: sha512-21TKHHh3eUHIi2MloeptJWALuCu5H7HQTdTrWIFReA8ad+aggoX+lRes3ex7/FtpC+sVUpFMQ+QTfYr74mruiQ==}
+  /@types/node@20.8.10:
+    resolution: {integrity: sha512-TlgT8JntpcbmKUFzjhsyhGfP2fsiz1Mv56im6enJ905xG1DAYesxJaeSbGqQmAw8OWPdhyJGhGSQGKRNJ45u9w==}
     dependencies:
-      undici-types: 5.25.3
+      undici-types: 5.26.5
     dev: true
 
   /@zip.js/zip.js@2.4.26:
@@ -384,12 +384,12 @@ packages:
       balanced-match: 1.0.2
     dev: true
 
-  /cesium@1.110.0:
-    resolution: {integrity: sha512-EqoLbsmCImezmJpDW54HpiiQ6hbDLp1Nb++2As//5bVYCJOpkk2CBggj7MeD3rL8xdyTcPwDNFNouLN5CyWDpg==}
+  /cesium@1.111.0:
+    resolution: {integrity: sha512-wWtBa1KIMIJZR39U4Tv+CkJUeCfi83eVjCLxblYilD9zd4gb7vm3V9ytmJ0+v0sqk9RQws5JOg7Hobbs9ODTxQ==}
     engines: {node: '>=14.0.0'}
     dependencies:
-      '@cesium/engine': 5.0.0
-      '@cesium/widgets': 4.1.0
+      '@cesium/engine': 6.1.0
+      '@cesium/widgets': 4.3.0
     dev: true
 
   /color-convert@2.0.1:
@@ -636,7 +636,7 @@ packages:
       '@protobufjs/path': 1.1.2
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
-      '@types/node': 20.8.7
+      '@types/node': 20.8.10
       long: 5.2.3
     dev: true
 
@@ -737,15 +737,15 @@ packages:
     hasBin: true
     dev: true
 
-  /undici-types@5.25.3:
-    resolution: {integrity: sha512-Ga1jfYwRn7+cP9v8auvEXN1rX3sWqlayd4HP7OKk4mZWylEmu3KzXDUGrQUN6Ol7qo1gPvB2e5gX6udnyEPgdA==}
+  /undici-types@5.26.5:
+    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
     dev: true
 
   /urijs@1.19.11:
     resolution: {integrity: sha512-HXgFDgDommxn5/bIv0cnQZsPhHDA90NPHD6+c/v21U5+Sx5hoP8+dP9IZXBU1gIfvdRfhG8cel9QNPeionfcCQ==}
     dev: true
 
-  /vite@4.5.0(@types/node@20.8.7):
+  /vite@4.5.0(@types/node@20.8.10):
     resolution: {integrity: sha512-ulr8rNLA6rkyFAlVWw2q5YJ91v098AFQ2R0PRFwPzREXOUJQPtFUG0t+/ZikhaOCDqFoDhN6/v8Sq0o4araFAw==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -773,7 +773,7 @@ packages:
       terser:
         optional: true
     dependencies:
-      '@types/node': 20.8.7
+      '@types/node': 20.8.10
       esbuild: 0.18.20
       postcss: 8.4.31
       rollup: 3.29.4

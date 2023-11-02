@@ -7,13 +7,13 @@ const resolves: any = {};
 const rejects: any = {};
 let globalMsgId = 0; // Activate calculation in the worker, returning a promise
 
-async function sendMessage(worker: Worker, payload: any, transferableObjects: ArrayBufferLike[]) {
+async function sendMessage<T = TerrainWorkerOutput>(worker: Worker, payload: any, transferableObjects: ArrayBufferLike[]) {
   const msgId = globalMsgId++;
   const msg = {
     id: msgId,
     payload,
   };
-  return new Promise<TerrainWorkerOutput>(function (resolve, reject) {
+  return new Promise<T>(function (resolve, reject) {
     // save callbacks for later
     resolves[msgId] = resolve;
     rejects[msgId] = reject;
@@ -53,7 +53,7 @@ class WorkerFarm {
   }
 
   /**
-   * todo:完善泛型提升
+   * todo:完善泛型提示
    * @param params 
    * @param transferableObjects 
    * @returns 

@@ -8,7 +8,8 @@ import Martini from "./martini";
 function mapboxTerrainToGrid(
   png: NdArray<Uint8Array>,
   interval?: number,
-  offset?: number
+  offset?: number,
+  noDataHeight?: number
 ) {
   // maybe we should do this on the GPU using REGL?
   // but that would require GPU -> CPU -> GPU
@@ -26,8 +27,14 @@ function mapboxTerrainToGrid(
       const r = png.get(x, yc, 0);
       const g = png.get(x, yc, 1);
       const b = png.get(x, yc, 2);
-      terrain[y * gridSize + x] =
-        r * 256 * 256 * interval + g * 256.0 * interval + b * interval + offset;
+
+      const height = r * 256 * 256 * interval + g * 256.0 * interval + b * interval + offset;
+
+      if (r === 0 && g === 0 && b === 0 && typeof noDataHeight === 'number') {
+        terrain[y * gridSize + x] = noDataHeight
+      } else {
+        terrain[y * gridSize + x] = height
+      }
     }
   }
   // backfill right and bottom borders
@@ -222,12 +229,17 @@ export interface TerrainWorkerInput extends QuantizedMeshOptions {
    * Terrain-RGB offset (default -10000)
    */
   offset?: number;
+
+  /**
+   * Terrain-RGB nodata fill
+   */
+  noDataHeight?: number
 }
 
 let martini: Martini;
 
 function decodeTerrain(parameters: TerrainWorkerInput) {
-  const { imageData, tileSize = 256, errorLevel, interval, offset } = parameters;
+  const { imageData, tileSize = 256, errorLevel, interval, offset, noDataHeight } = parameters;
 
   const pixels = ndarray(
     new Uint8Array(imageData),
@@ -239,7 +251,7 @@ function decodeTerrain(parameters: TerrainWorkerInput) {
   // Tile size must be maintained through the life of the worker
   martini ??= new Martini(tileSize + 1);
 
-  const terrain = mapboxTerrainToGrid(pixels, interval, offset);
+  const terrain = mapboxTerrainToGrid(pixels, interval, offset, noDataHeight);
 
   const tile = martini.createTile(terrain);
 

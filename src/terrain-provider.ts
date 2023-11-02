@@ -39,7 +39,8 @@ interface MartiniTerrainOpts {
   requestVertexNormals?: boolean
   requestWaterMask?: boolean
   retryCallback?: Resource.RetryCallback
-  retryAttempts?: number
+  retryAttempts?: number,
+  noDataHeight?: number
 }
 
 class StretchedTilingScheme extends WebMercatorTilingScheme {
@@ -90,10 +91,12 @@ export default class MartiniTerrainProvider {
 
   retryCallback?: Resource.RetryCallback
   retryAttempts?: number
+  noDataHeight?: number
 
   constructor(opts: MartiniTerrainOpts) {
     this.retryAttempts = opts?.retryAttempts
     this.retryCallback = opts?.retryCallback
+    this.noDataHeight = opts?.noDataHeight
     this.resource = new DefaultHeightmapResource({ url: opts.url, retryAttempts: this.retryAttempts, retryCallback: this.retryCallback });
 
     this.interval = opts.interval ?? 0.1;
@@ -179,6 +182,7 @@ export default class MartiniTerrainProvider {
         tileSize,
         interval: this.interval,
         offset: this.offset,
+        noDataHeight: this.noDataHeight
       };
 
       let res;

@@ -30,8 +30,8 @@
   "license": "ISC",
   "devDependencies": {
     "@types/ndarray": "^1.0.13",
-    "@types/node": "^20.8.7",
-    "cesium": "^1.110.0",
+    "@types/node": "^20.8.10",
+    "cesium": "^1.111.0",
     "rimraf": "^5.0.5",
     "typescript": "^5.2.2",
     "vite": "^4.5.0"
