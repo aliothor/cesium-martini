@@ -1,5 +1,5 @@
 import { NdArray } from "ndarray";
-declare function mapboxTerrainToGrid(png: NdArray<Uint8Array>, interval?: number, offset?: number): Float32Array;
+declare function mapboxTerrainToGrid(png: NdArray<Uint8Array>, interval?: number, offset?: number, noDataHeight?: number): Float32Array;
 export interface TerrainWorkerOutput {
     minimumHeight: number;
     maximumHeight: number;
@@ -32,6 +32,10 @@ export interface TerrainWorkerInput extends QuantizedMeshOptions {
      * Terrain-RGB offset (default -10000)
      */
     offset?: number;
+    /**
+     * Terrain-RGB nodata fill
+     */
+    noDataHeight?: number;
 }
 declare function decodeTerrain(parameters: TerrainWorkerInput): TerrainWorkerOutput;
 export { mapboxTerrainToGrid, createQuantizedMeshData, decodeTerrain };
