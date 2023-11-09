@@ -41,6 +41,7 @@ interface MartiniTerrainOpts {
   retryCallback?: Resource.RetryCallback
   retryAttempts?: number,
   noDataHeight?: number
+  zeroMeshError?: boolean
 }
 
 class StretchedTilingScheme extends WebMercatorTilingScheme {
@@ -92,11 +93,13 @@ export default class MartiniTerrainProvider {
   retryCallback?: Resource.RetryCallback
   retryAttempts?: number
   noDataHeight?: number
+  zeroMeshError?: boolean
 
   constructor(opts: MartiniTerrainOpts) {
     this.retryAttempts = opts?.retryAttempts
     this.retryCallback = opts?.retryCallback
     this.noDataHeight = opts?.noDataHeight
+    this.zeroMeshError = opts?.zeroMeshError
     this.resource = new DefaultHeightmapResource({ url: opts.url, retryAttempts: this.retryAttempts, retryCallback: this.retryCallback });
 
     this.interval = opts.interval ?? 0.1;
@@ -167,7 +170,7 @@ export default class MartiniTerrainProvider {
       const tileRect = this.tilingScheme.tileXYToRectangle(x, y, z);
       ///const center = Rectangle.center(tileRect);
 
-      const err = this.errorAtZoom(z);
+      const err = this.zeroMeshError ? 0 : this.errorAtZoom(z);
 
       let maxLength = this.maxVertexDistance(tileRect);
 
