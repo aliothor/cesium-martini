@@ -15,8 +15,8 @@ import {
 } from "cesium";
 import WorkerFarm from "./worker-farm";
 import { TerrainWorkerInput, decodeTerrain } from "./worker-util";
-import DefaultHeightmapResource, { HeightmapResource } from "./heightmap-resource";
 import { emptyMesh, TerrainWorkerOutput } from "./worker-util";
+import DefaultHeightmapResource, { HeightmapResource } from "./heightmap-resource";
 
 // https://github.com/CesiumGS/cesium/blob/1.68/Source/Scene/MapboxImageryProvider.js#L42
 
