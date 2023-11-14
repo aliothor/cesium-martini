@@ -22,6 +22,8 @@ interface MartiniTerrainOpts {
     retryCallback?: Resource.RetryCallback;
     retryAttempts?: number;
     noDataHeight?: number;
+    zeroMeshError?: boolean;
+    tileImageWidth?: number;
 }
 export default class MartiniTerrainProvider {
     hasWaterMask: boolean;
@@ -50,6 +52,8 @@ export default class MartiniTerrainProvider {
     retryCallback?: Resource.RetryCallback;
     retryAttempts?: number;
     noDataHeight?: number;
+    zeroMeshError?: boolean;
+    tileImageWidth?: number;
     constructor(opts: MartiniTerrainOpts);
     requestTileGeometry(x: number, y: number, z: number, request: any): Promise<QuantizedMeshTerrainData> | undefined;
     processTile(x: number, y: number, z: number): Promise<QuantizedMeshTerrainData>;
