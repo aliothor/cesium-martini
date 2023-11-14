@@ -1,3 +1,4 @@
 module.exports = {
-  'pre-commit': 'pnpm commitlint ${1}',
+  'pre-commit': 'pnpm lint-staged',
+  'commit-msg': 'pnpm commitlint ${1}',
 }
