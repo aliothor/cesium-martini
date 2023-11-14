@@ -2,7 +2,7 @@
   "name": "@aliothor/cesium-martini",
   "version": "1.0.5",
   "description": "Create cesium terrain through raster tile service",
-  "type": "commonjs",
+  "type": "module",
   "main": "dist/index.umd.cjs",
   "module": "dist/index.js",
   "types": "types/index.d.ts",
@@ -16,7 +16,8 @@
   "scripts": {
     "prepublish": "pnpm run build",
     "build": "rimraf dist types && tsc && vite build",
-    "commit": "cz"
+    "commit": "cz",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md"
   },
   "publishConfig": {
     "access": "public",
@@ -37,9 +38,11 @@
     "@types/node": "^20.9.0",
     "cesium": "^1.111.0",
     "commitizen": "^4.3.0",
+    "conventional-changelog-cli": "^4.1.0",
     "cz-conventional-changelog": "^3.3.0",
     "lint-staged": "^15.1.0",
     "rimraf": "^5.0.5",
+    "semantic-release": "^22.0.7",
     "simple-git-hooks": "^2.9.0",
     "typescript": "^5.2.2",
     "vite": "^4.5.0"
