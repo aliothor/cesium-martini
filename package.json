@@ -1,6 +1,6 @@
 {
   "name": "@aliothor/cesium-martini",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "Create cesium terrain through raster tile service",
   "type": "module",
   "main": "dist/index.umd.cjs",
@@ -14,7 +14,9 @@
     }
   },
   "scripts": {
-    "build": "rimraf dist types && tsc && vite build"
+    "prepublish": "pnpm run build",
+    "build": "rimraf dist types && tsc && vite build",
+    "commit": "cz"
   },
   "publishConfig": {
     "access": "public",
@@ -29,14 +31,25 @@
   "author": "aliothor",
   "license": "ISC",
   "devDependencies": {
+    "@commitlint/cli": "^18.4.1",
+    "@commitlint/config-conventional": "^18.4.0",
     "@types/ndarray": "^1.0.14",
     "@types/node": "^20.9.0",
     "cesium": "^1.111.0",
+    "commitizen": "^4.3.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "lint-staged": "^15.1.0",
     "rimraf": "^5.0.5",
+    "simple-git-hooks": "^2.9.0",
     "typescript": "^5.2.2",
     "vite": "^4.5.0"
   },
   "dependencies": {
     "ndarray": "^1.0.19"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
