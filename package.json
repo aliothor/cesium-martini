@@ -2,7 +2,7 @@
   "name": "@aliothor/cesium-martini",
   "version": "1.0.5",
   "description": "Create cesium terrain through raster tile service",
-  "type": "module",
+  "type": "commonjs",
   "main": "dist/index.umd.cjs",
   "module": "dist/index.js",
   "types": "types/index.d.ts",
