@@ -1,5 +1,5 @@
 import { Resource } from "cesium";
-import { TileCoordinates } from "./terrain-provider";
+import type { TileCoordinates } from "./terrain-provider";
 
 export interface HeightmapResource {
   tileSize: number;
@@ -23,9 +23,9 @@ export interface DefaultHeightmapResourceOpts {
 
 export class DefaultHeightmapResource implements HeightmapResource {
   resource: Resource;
-  tileSize: number = 256;
+  tileSize = 256;
   maxZoom: number;
-  skipOddLevels: boolean = false;
+  skipOddLevels = false;
   contextQueue: CanvasRef[];
   retryCallback?: Resource.RetryCallback;
   retryAttempts?: number;
@@ -58,7 +58,7 @@ export class DefaultHeightmapResource implements HeightmapResource {
   }
 
   getPixels(
-    img: HTMLImageElement | HTMLCanvasElement | ImageBitmap | undefined
+    img: HTMLImageElement | HTMLCanvasElement | ImageBitmap | undefined,
   ): ImageData | undefined {
     const canvasRef = this.getCanvas();
     if (!canvasRef) return undefined;
@@ -97,8 +97,8 @@ export class DefaultHeightmapResource implements HeightmapResource {
   };
 
   getTileDataAvailable({ z }: { z: number }) {
-    if (z == this.maxZoom) return true;
-    if (z % 2 == 1 && this.skipOddLevels) return false;
+    if (z === this.maxZoom) return true;
+    if (z % 2 === 1 && this.skipOddLevels) return false;
     if (z > this.maxZoom) return false;
     return true;
   }

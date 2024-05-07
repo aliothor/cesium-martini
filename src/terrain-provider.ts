@@ -1,24 +1,24 @@
 import {
-  Cartographic,
-  Rectangle,
-  Ellipsoid,
-  WebMercatorTilingScheme,
-  Math as CMath,
-  Event as CEvent,
   BoundingSphere,
-  QuantizedMeshTerrainData,
-  OrientedBoundingBox,
-  TerrainProvider,
+  Event as CEvent,
+  Math as CMath,
+  Cartographic,
   Credit,
-  Resource,
-  TilingScheme,
+  Ellipsoid,
+  OrientedBoundingBox,
+  QuantizedMeshTerrainData,
+  Rectangle,
+  type Resource,
+  TerrainProvider,
+  type TilingScheme,
+  WebMercatorTilingScheme,
 } from "cesium";
-import WorkerFarm from "./worker-farm";
-import { TerrainWorkerInput, decodeTerrain } from "./worker-util";
-import { emptyMesh, TerrainWorkerOutput } from "./worker-util";
 import DefaultHeightmapResource, {
-  HeightmapResource,
+  type HeightmapResource,
 } from "./heightmap-resource";
+import WorkerFarm from "./worker-farm";
+import { type TerrainWorkerInput, decodeTerrain } from "./worker-util";
+import { type TerrainWorkerOutput, emptyMesh } from "./worker-util";
 
 // https://github.com/CesiumGS/cesium/blob/1.68/Source/Scene/MapboxImageryProvider.js#L42
 export interface TileCoordinates {
@@ -51,14 +51,14 @@ class StretchedTilingScheme extends WebMercatorTilingScheme {
     x: number,
     y: number,
     level: number,
-    res: Rectangle
+    res: Rectangle,
   ): Rectangle {
-    let result = super.tileXYToRectangle(x, y, level);
-    if (y == 0) {
+    const result = super.tileXYToRectangle(x, y, level);
+    if (y === 0) {
       //console.log("Top row", res, y, level);
       result.north = Math.PI / 2;
     }
-    if (y + 1 == Math.pow(2, level)) {
+    if (y + 1 === Math.pow(2, level)) {
       result.south = -Math.PI / 2;
     }
     return result;
@@ -75,13 +75,13 @@ export default class MartiniTerrainProvider {
   tilingScheme: TilingScheme;
   ellipsoid: Ellipsoid;
   workerFarm: WorkerFarm | null = null;
-  inProgressWorkers: number = 0;
+  inProgressWorkers = 0;
   levelOfDetailScalar: number;
-  maxWorkers: number = 5;
-  minError: number = 0.1;
+  maxWorkers = 5;
+  minError = 0.1;
   minZoomLevel: number;
-  fillPoles: boolean = true;
-  _errorAtMinZoom: number = 1000;
+  fillPoles = true;
+  _errorAtMinZoom = 1000;
 
   resource: HeightmapResource;
   interval: number;
@@ -90,7 +90,7 @@ export default class MartiniTerrainProvider {
   RADIUS_SCALAR = 1.0;
   requestVertexNormals: boolean | undefined;
   requestWaterMask: boolean | undefined;
-  availability: boolean = false;
+  availability = false;
 
   retryCallback?: Resource.RetryCallback;
   retryAttempts?: number;
@@ -180,7 +180,7 @@ export default class MartiniTerrainProvider {
 
       const err = this.zeroMeshError ? 0 : this.errorAtZoom(z);
 
-      let maxLength = this.maxVertexDistance(tileRect);
+      const maxLength = this.maxVertexDistance(tileRect);
 
       const params: TerrainWorkerInput = {
         imageData: pixelData,
@@ -214,7 +214,7 @@ export default class MartiniTerrainProvider {
   errorAtZoom(zoom: number) {
     return Math.max(
       this.getLevelMaximumGeometricError(zoom) / this.levelOfDetailScalar,
-      this.minError
+      this.minError,
     );
   }
 
@@ -233,9 +233,9 @@ export default class MartiniTerrainProvider {
     const center = Rectangle.center(tileRect);
 
     const latScalar = Math.min(Math.abs(Math.sin(center.latitude)), 0.995);
-    let v = Math.max(
+    const v = Math.max(
       Math.ceil((200 / (z + 1)) * Math.pow(1 - latScalar, 0.25)),
-      4
+      4,
     );
     const output = emptyMesh(v);
     const err = this.errorAtZoom(z);
@@ -245,7 +245,7 @@ export default class MartiniTerrainProvider {
   createQuantizedMeshData(
     tileRect: Rectangle,
     errorLevel: number,
-    workerOutput: TerrainWorkerOutput
+    workerOutput: TerrainWorkerOutput,
   ) {
     const {
       minimumHeight,
@@ -275,27 +275,27 @@ export default class MartiniTerrainProvider {
     const occlusionPoint = new Cartographic(
       center.longitude,
       center.latitude,
-      occlusionHeight
+      occlusionHeight,
       // Scaling factor of two just to be sure.
     );
 
     const horizonOcclusionPoint = this.ellipsoid.transformPositionToScaledSpace(
-      Cartographic.toCartesian(occlusionPoint)
+      Cartographic.toCartesian(occlusionPoint),
     );
 
-    let orientedBoundingBox = OrientedBoundingBox.fromRectangle(
+    const orientedBoundingBox = OrientedBoundingBox.fromRectangle(
       tileRect,
       minimumHeight,
       maximumHeight,
-      this.tilingScheme.ellipsoid
+      this.tilingScheme.ellipsoid,
     );
-    let boundingSphere =
+    const boundingSphere =
       BoundingSphere.fromOrientedBoundingBox(orientedBoundingBox);
 
     // SE NW NE
     // NE NW SE
 
-    let result = new QuantizedMeshTerrainData({
+    const result = new QuantizedMeshTerrainData({
       minimumHeight,
       maximumHeight,
       quantizedVertices,
@@ -322,7 +322,7 @@ export default class MartiniTerrainProvider {
       TerrainProvider.getEstimatedLevelZeroGeometricErrorForAHeightmap(
         this.tilingScheme.ellipsoid,
         this.tileImageWidth ?? 65,
-        this.tilingScheme.getNumberOfXTilesAtLevel(0)
+        this.tilingScheme.getNumberOfXTilesAtLevel(0),
       );
 
     // Scalar to control overzooming

@@ -21,12 +21,12 @@ export default class Martini {
     // get triangle coordinates from its index in an implicit binary tree
     for (let i = 0; i < this.numTriangles; i++) {
       let id = i + 2;
-      let ax = 0,
-        ay = 0,
-        bx = 0,
-        by = 0,
-        cx = 0,
-        cy = 0;
+      let ax = 0;
+      let ay = 0;
+      let bx = 0;
+      let by = 0;
+      let cx = 0;
+      let cy = 0;
       if (id & 1) {
         bx = by = cx = tileSize; // bottom-left triangle
       } else {
@@ -75,7 +75,7 @@ class Tile {
       throw new Error(
         `Expected terrain data of length ${
           size * size
-        } (${size} x ${size}), got ${terrain.length}.`
+        } (${size} x ${size}), got ${terrain.length}.`,
       );
 
     this.terrain = terrain;
@@ -120,7 +120,7 @@ class Tile {
         errors[middleIndex] = Math.max(
           errors[middleIndex],
           errors[leftChildIndex],
-          errors[rightChildIndex]
+          errors[rightChildIndex],
         );
       }
     }
@@ -150,7 +150,7 @@ class Tile {
       bx: number,
       by: number,
       cx: number,
-      cy: number
+      cy: number,
     ) {
       const mx = (ax + bx) >> 1;
       const my = (ay + by) >> 1;
@@ -182,7 +182,7 @@ class Tile {
       bx: number,
       by: number,
       cx: number,
-      cy: number
+      cy: number,
     ) {
       const mx = (ax + bx) >> 1;
       const my = (ay + by) >> 1;

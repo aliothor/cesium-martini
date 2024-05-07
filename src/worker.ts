@@ -2,7 +2,7 @@ import { decodeTerrain } from "./worker-util";
 
 const work = self as unknown as Worker;
 
-work.onmessage = function (msg) {
+work.onmessage = (msg) => {
   const { id, payload } = msg.data;
   if (id == null) return;
   let objects: ArrayBufferLike[] = [];
@@ -12,7 +12,7 @@ work.onmessage = function (msg) {
     objects.push(res.indices.buffer);
     objects.push(res.quantizedVertices.buffer);
     work.postMessage({ id, payload: res }, objects);
-  } catch (err: any) {
+  } catch (err: unknown) {
     work.postMessage({ id, err: String(err) });
   } finally {
     res = null;

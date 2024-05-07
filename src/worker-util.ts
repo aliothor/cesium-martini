@@ -2,14 +2,14 @@
 //const canvas = new OffscreenCanvas(256, 256);
 //const ctx = canvas.getContext("2d");
 
-import ndarray, { NdArray } from "ndarray";
+import ndarray, { type NdArray } from "ndarray";
 import Martini from "./martini";
 
 function mapboxTerrainToGrid(
   png: NdArray<Uint8Array>,
   interval?: number,
   offset?: number,
-  noDataHeight?: number
+  noDataHeight?: number,
 ) {
   // maybe we should do this on the GPU using REGL?
   // but that would require GPU -> CPU -> GPU
@@ -95,26 +95,26 @@ function _emptyMesh(n: number): TerrainWorkerOutput {
   let tix = 0;
 
   for (let i = 0; i < nVertices; i++) {
-    let rx = i % n; //* 32767) / (n - 1);
-    let ry = Math.floor(i / n); //* 32767) / (n - 1);
+    const rx = i % n; //* 32767) / (n - 1);
+    const ry = Math.floor(i / n); //* 32767) / (n - 1);
     const ix = n * rx + ry;
     quantizedVertices[ix] = (rx * 32768) / (n - 1);
     quantizedVertices[nVertices + ix] = (ry * 32768) / (n - 1);
     quantizedVertices[2 * nVertices + ix] = 0;
-    if (ry == 0) westIndices.push(ix);
-    if (rx == 0) southIndices.push(ix);
-    if (rx == n - 1) eastIndices.push(ix);
-    if (ry == n - 1) northIndices.push(ix);
+    if (ry === 0) westIndices.push(ix);
+    if (rx === 0) southIndices.push(ix);
+    if (rx === n - 1) eastIndices.push(ix);
+    if (ry === n - 1) northIndices.push(ix);
 
     // Add triangles
     const rix = i - ry * n;
-    if (rix != n - 1) {
+    if (rix !== n - 1) {
       indices[tix * 3] = i;
       indices[tix * 3 + 1] = i + n + 1;
       indices[tix * 3 + 2] = i + 1;
       tix++;
     }
-    if (rix != 0) {
+    if (rix !== 0) {
       indices[tix * 3] = i - 1;
       indices[tix * 3 + 1] = i + n - 1;
       indices[tix * 3 + 2] = i + n;
@@ -134,7 +134,7 @@ function _emptyMesh(n: number): TerrainWorkerOutput {
   };
 }
 
-let _meshCache: TerrainWorkerOutput[] = [];
+const _meshCache: TerrainWorkerOutput[] = [];
 export function emptyMesh(n: number) {
   // A memoized function to return empty meshes
   if (n in _meshCache) {
@@ -155,7 +155,7 @@ export interface QuantizedMeshOptions {
 function createQuantizedMeshData(
   tile: any,
   mesh: any,
-  tileSize: number
+  tileSize: number,
 ): TerrainWorkerOutput {
   const xvals = [];
   const yvals = [];
@@ -165,8 +165,8 @@ function createQuantizedMeshData(
   const eastIndices = [];
   const westIndices = [];
 
-  let minimumHeight = Infinity;
-  let maximumHeight = -Infinity;
+  let minimumHeight = Number.POSITIVE_INFINITY;
+  let maximumHeight = Number.NEGATIVE_INFINITY;
   const scalar = 32768.0 / tileSize;
 
   for (let ix = 0; ix < mesh.vertices.length / 2; ix++) {
@@ -179,13 +179,13 @@ function createQuantizedMeshData(
 
     heightMeters.push(height);
 
-    if (py == 0) northIndices.push(vertexIx);
-    if (py == tileSize) southIndices.push(vertexIx);
-    if (px == 0) westIndices.push(vertexIx);
-    if (px == tileSize) eastIndices.push(vertexIx);
+    if (py === 0) northIndices.push(vertexIx);
+    if (py === tileSize) southIndices.push(vertexIx);
+    if (px === 0) westIndices.push(vertexIx);
+    if (px === tileSize) eastIndices.push(vertexIx);
 
-    let xv = px * scalar;
-    let yv = (tileSize - py) * scalar;
+    const xv = px * scalar;
+    const yv = (tileSize - py) * scalar;
 
     xvals.push(xv);
     yvals.push(yv);
@@ -201,7 +201,7 @@ function createQuantizedMeshData(
   const triangles = new Uint16Array(mesh.triangles);
   const quantizedVertices = new Uint16Array(
     //verts
-    [...xvals, ...yvals, ...heights]
+    [...xvals, ...yvals, ...heights],
   );
 
   // SE NW NE
@@ -257,7 +257,7 @@ function decodeTerrain(parameters: TerrainWorkerInput) {
     new Uint8Array(imageData),
     [tileSize, tileSize, 4],
     [4, 4 * tileSize, 1],
-    0
+    0,
   );
 
   // Tile size must be maintained through the life of the worker

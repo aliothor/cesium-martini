@@ -1,5 +1,5 @@
+import type { TerrainWorkerInput, TerrainWorkerOutput } from "./worker-util";
 import TerrainWorker from "./worker?worker&inline";
-import { TerrainWorkerInput, TerrainWorkerOutput } from "./worker-util";
 
 const resolves: any = {};
 const rejects: any = {};
@@ -8,14 +8,14 @@ let globalMsgId = 0; // Activate calculation in the worker, returning a promise
 async function sendMessage<T = TerrainWorkerOutput>(
   worker: Worker,
   payload: any,
-  transferableObjects: ArrayBufferLike[]
+  transferableObjects: ArrayBufferLike[],
 ) {
   const msgId = globalMsgId++;
   const msg = {
     id: msgId,
     payload,
   };
-  return new Promise<T>(function (resolve, reject) {
+  return new Promise<T>((resolve, reject) => {
     // save callbacks for later
     resolves[msgId] = resolve;
     rejects[msgId] = reject;
@@ -62,7 +62,7 @@ class WorkerFarm {
    */
   async scheduleTask<T = TerrainWorkerInput>(
     params: T,
-    transferableObjects: ArrayBufferLike[]
+    transferableObjects: ArrayBufferLike[],
   ) {
     return await sendMessage(this.worker, params, transferableObjects);
   }

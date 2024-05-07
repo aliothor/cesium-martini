@@ -34,7 +34,6 @@ cesiumViewer.scene.terrainProvider = terrainLayer;
 ```
 
 ## Todo
-1. 增加eslint检查
 2. 完善使用文档
-3. 完善单元测试
+3. 完善单元测试和E2E测试(需要在浏览器环境中测试Web Worker)
 4. 参考[dem2terrain](https://github.com/FreeGIS/dem2terrain)实现Cesium地形切片工具
