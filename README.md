@@ -1,8 +1,8 @@
-# Cesium-Martini
+# cesium-martini
 
-**This is a fork from [cesium-martini](https://github.com/hongfaqiu/cesium-martini)**, click to view details.
+> **主要代码来自[cesium-martini](https://github.com/hongfaqiu/cesium-martini)**
 
-This module can create cesium terrain through raster tile service.
+### 该模块可以通过Mapbox地形栅格瓦片服务创建Cesium地形
 
 ![Cesium-Martini](/img/cesium-martini.png)
 
@@ -32,3 +32,9 @@ const terrainLayer = new MartiniTerrainProvider({
 
 cesiumViewer.scene.terrainProvider = terrainLayer;
 ```
+
+## Todo
+1. 增加eslint检查
+2. 完善使用文档
+3. 完善单元测试
+4. 参考[dem2terrain](https://github.com/FreeGIS/dem2terrain)实现Cesium地形切片工具
