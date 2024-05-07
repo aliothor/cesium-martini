@@ -11,15 +11,16 @@ import {
   TerrainProvider,
   Credit,
   Resource,
-  TilingScheme
+  TilingScheme,
 } from "cesium";
 import WorkerFarm from "./worker-farm";
 import { TerrainWorkerInput, decodeTerrain } from "./worker-util";
 import { emptyMesh, TerrainWorkerOutput } from "./worker-util";
-import DefaultHeightmapResource, { HeightmapResource } from "./heightmap-resource";
+import DefaultHeightmapResource, {
+  HeightmapResource,
+} from "./heightmap-resource";
 
 // https://github.com/CesiumGS/cesium/blob/1.68/Source/Scene/MapboxImageryProvider.js#L42
-
 export interface TileCoordinates {
   x: number;
   y: number;
@@ -36,13 +37,13 @@ interface MartiniTerrainOpts {
   offset?: number;
   minZoomLevel?: number;
   fillPoles?: boolean;
-  requestVertexNormals?: boolean
-  requestWaterMask?: boolean
-  retryCallback?: Resource.RetryCallback
-  retryAttempts?: number,
-  noDataHeight?: number
-  zeroMeshError?: boolean
-  tileImageWidth?: number
+  requestVertexNormals?: boolean;
+  requestWaterMask?: boolean;
+  retryCallback?: Resource.RetryCallback;
+  retryAttempts?: number;
+  noDataHeight?: number;
+  zeroMeshError?: boolean;
+  tileImageWidth?: number;
 }
 
 class StretchedTilingScheme extends WebMercatorTilingScheme {
@@ -89,21 +90,25 @@ export default class MartiniTerrainProvider {
   RADIUS_SCALAR = 1.0;
   requestVertexNormals: boolean | undefined;
   requestWaterMask: boolean | undefined;
-  availability: boolean = false
+  availability: boolean = false;
 
-  retryCallback?: Resource.RetryCallback
-  retryAttempts?: number
-  noDataHeight?: number
-  zeroMeshError?: boolean
-  tileImageWidth?: number
+  retryCallback?: Resource.RetryCallback;
+  retryAttempts?: number;
+  noDataHeight?: number;
+  zeroMeshError?: boolean;
+  tileImageWidth?: number;
 
   constructor(opts: MartiniTerrainOpts) {
-    this.retryAttempts = opts?.retryAttempts
-    this.retryCallback = opts?.retryCallback
-    this.noDataHeight = opts?.noDataHeight
-    this.zeroMeshError = opts?.zeroMeshError
-    this.tileImageWidth = opts?.tileImageWidth
-    this.resource = new DefaultHeightmapResource({ url: opts.url, retryAttempts: this.retryAttempts, retryCallback: this.retryCallback });
+    this.retryAttempts = opts?.retryAttempts;
+    this.retryCallback = opts?.retryCallback;
+    this.noDataHeight = opts?.noDataHeight;
+    this.zeroMeshError = opts?.zeroMeshError;
+    this.tileImageWidth = opts?.tileImageWidth;
+    this.resource = new DefaultHeightmapResource({
+      url: opts.url,
+      retryAttempts: this.retryAttempts,
+      retryCallback: this.retryCallback,
+    });
 
     this.interval = opts.interval ?? 0.1;
     this.offset = opts.offset ?? -10000;
@@ -117,8 +122,8 @@ export default class MartiniTerrainProvider {
     this.availability = true;
     this.readyPromise = Promise.resolve(true);
     this.minError = opts.minimumErrorLevel ?? 0.1;
-    this.requestVertexNormals = opts.requestVertexNormals
-    this.requestWaterMask = opts.requestWaterMask
+    this.requestVertexNormals = opts.requestVertexNormals;
+    this.requestWaterMask = opts.requestWaterMask;
 
     this.errorEvent.addEventListener(console.log, this);
     this.ellipsoid = opts.ellipsoid ?? Ellipsoid.WGS84;
@@ -167,7 +172,7 @@ export default class MartiniTerrainProvider {
     try {
       const { tileSize, getTilePixels } = this.resource;
       let px = await getTilePixels({ x, y, z });
-      if (!px) throw Error('no pixels at ' + `x: ${x}, y: ${y}, z: ${z}`)
+      if (!px) throw Error("no pixels at " + `x: ${x}, y: ${y}, z: ${z}`);
       let pixelData: Uint8ClampedArray | undefined = px.data;
 
       const tileRect = this.tilingScheme.tileXYToRectangle(x, y, z);
@@ -188,7 +193,7 @@ export default class MartiniTerrainProvider {
         tileSize,
         interval: this.interval,
         offset: this.offset,
-        noDataHeight: this.noDataHeight
+        noDataHeight: this.noDataHeight,
       };
 
       let res;
@@ -237,7 +242,11 @@ export default class MartiniTerrainProvider {
     return this.createQuantizedMeshData(tileRect, err, output);
   }
 
-  createQuantizedMeshData(tileRect: Rectangle, errorLevel: number, workerOutput: TerrainWorkerOutput) {
+  createQuantizedMeshData(
+    tileRect: Rectangle,
+    errorLevel: number,
+    workerOutput: TerrainWorkerOutput
+  ) {
     const {
       minimumHeight,
       maximumHeight,

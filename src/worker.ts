@@ -1,6 +1,6 @@
 import { decodeTerrain } from "./worker-util";
 
-const work = (self as unknown) as Worker
+const work = self as unknown as Worker;
 
 work.onmessage = function (msg) {
   const { id, payload } = msg.data;

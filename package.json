@@ -2,58 +2,57 @@
   "name": "@aliothor/cesium-martini",
   "version": "1.0.5",
   "description": "Create cesium terrain through raster tile service",
-  "type": "module",
-  "main": "dist/index.umd.cjs",
-  "module": "dist/index.js",
-  "types": "types/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.umd.cjs",
-      "types": "./types/index.d.ts"
-    }
-  },
-  "scripts": {
-    "prepublish": "pnpm run build",
-    "build": "rimraf dist types && tsc && vite build",
-    "commit": "cz",
-    "release": "commit-and-tag-version"
-  },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  },
   "keywords": [
     "cesium",
     "martini",
     "terrain",
     "mapbox"
   ],
+  "repository": {
+    "url": "https://github.com/aliothor/cesium-martini"
+  },
+  "license": "MIT",
   "author": "aliothor",
-  "license": "ISC",
-  "devDependencies": {
-    "@commitlint/cli": "^18.4.1",
-    "@commitlint/config-conventional": "^18.4.0",
-    "@types/ndarray": "^1.0.14",
-    "@types/node": "^20.9.0",
-    "cesium": "^1.111.0",
-    "commit-and-tag-version": "^12.0.0",
-    "commitizen": "^4.3.0",
-    "conventional-changelog-cli": "^4.1.0",
-    "cz-conventional-changelog": "^3.3.0",
-    "lint-staged": "^15.1.0",
-    "rimraf": "^5.0.5",
-    "semantic-release": "^22.0.7",
-    "simple-git-hooks": "^2.9.0",
-    "typescript": "^5.2.2",
-    "vite": "^4.5.0"
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.umd.cjs"
+    }
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/types/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "prepack": "pnpm run build",
+    "prepublish": "pnpm run build",
+    "release": "changelogen --release && npm publish && git push --follow-tags",
+    "test": "pnpm test:types && vitest run",
+    "test:types": "tsc --noEmit --skipLibCheck"
   },
   "dependencies": {
     "ndarray": "^1.0.19"
   },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
+  "devDependencies": {
+    "@types/ndarray": "^1.0.14",
+    "@types/node": "^20.12.10",
+    "changelogen": "^0.5.5",
+    "typescript": "^5.4.5",
+    "unbuild": "^2.0.0",
+    "vite": "^5.2.11",
+    "vite-plugin-dts": "^3.9.1",
+    "vitest": "^1.6.0"
+  },
+  "peerDependencies": {
+    "cesium": "^1.115.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

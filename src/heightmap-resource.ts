@@ -17,8 +17,8 @@ export interface DefaultHeightmapResourceOpts {
   skipOddLevels?: boolean;
   maxZoom?: number;
   tileSize?: number;
-  retryCallback?: Resource.RetryCallback
-  retryAttempts?: number
+  retryCallback?: Resource.RetryCallback;
+  retryAttempts?: number;
 }
 
 export class DefaultHeightmapResource implements HeightmapResource {
@@ -27,8 +27,8 @@ export class DefaultHeightmapResource implements HeightmapResource {
   maxZoom: number;
   skipOddLevels: boolean = false;
   contextQueue: CanvasRef[];
-  retryCallback?: Resource.RetryCallback
-  retryAttempts?: number
+  retryCallback?: Resource.RetryCallback;
+  retryAttempts?: number;
 
   constructor(opts: DefaultHeightmapResourceOpts) {
     // @ts-ignore
@@ -37,8 +37,8 @@ export class DefaultHeightmapResource implements HeightmapResource {
     this.tileSize = opts.tileSize ?? 256;
     this.maxZoom = opts.maxZoom ?? 15;
     this.contextQueue = [];
-    this.retryAttempts = opts?.retryAttempts
-    this.retryCallback = opts?.retryCallback
+    this.retryAttempts = opts?.retryAttempts;
+    this.retryCallback = opts?.retryCallback;
   }
 
   getCanvas() {
@@ -57,10 +57,12 @@ export class DefaultHeightmapResource implements HeightmapResource {
     return ctx;
   }
 
-  getPixels(img: HTMLImageElement | HTMLCanvasElement | ImageBitmap | undefined): ImageData | undefined {
+  getPixels(
+    img: HTMLImageElement | HTMLCanvasElement | ImageBitmap | undefined
+  ): ImageData | undefined {
     const canvasRef = this.getCanvas();
-    if (!canvasRef) return undefined
-    if (!img) return undefined
+    if (!canvasRef) return undefined;
+    if (!img) return undefined;
     const { context } = canvasRef;
     //context.scale(1, -1);
     // Chrome appears to vertically flip the image for reasons that are unclear
@@ -84,9 +86,9 @@ export class DefaultHeightmapResource implements HeightmapResource {
         },
         preserveQueryParameters: true,
         retryAttempts: this.retryAttempts,
-        retryCallback: this.retryCallback
+        retryCallback: this.retryCallback,
       })
-      .fetchImage()
+      .fetchImage();
   }
 
   getTilePixels = async (coords: TileCoordinates) => {

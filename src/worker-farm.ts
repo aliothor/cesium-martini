@@ -1,13 +1,15 @@
-
 import TerrainWorker from "./worker?worker&inline";
-import { TerrainWorkerInput } from "./worker-util";
-import { TerrainWorkerOutput } from "./worker-util";
+import { TerrainWorkerInput, TerrainWorkerOutput } from "./worker-util";
 
 const resolves: any = {};
 const rejects: any = {};
 let globalMsgId = 0; // Activate calculation in the worker, returning a promise
 
-async function sendMessage<T = TerrainWorkerOutput>(worker: Worker, payload: any, transferableObjects: ArrayBufferLike[]) {
+async function sendMessage<T = TerrainWorkerOutput>(
+  worker: Worker,
+  payload: any,
+  transferableObjects: ArrayBufferLike[]
+) {
   const msgId = globalMsgId++;
   const msg = {
     id: msgId,
@@ -53,12 +55,15 @@ class WorkerFarm {
   }
 
   /**
-   * todo:完善泛型提示
-   * @param params 
-   * @param transferableObjects 
-   * @returns 
+   * todo:完善泛型标注
+   * @param params
+   * @param transferableObjects
+   * @returns
    */
-  async scheduleTask<T = TerrainWorkerInput>(params: T, transferableObjects: ArrayBufferLike[]) {
+  async scheduleTask<T = TerrainWorkerInput>(
+    params: T,
+    transferableObjects: ArrayBufferLike[]
+  ) {
     return await sendMessage(this.worker, params, transferableObjects);
   }
 }

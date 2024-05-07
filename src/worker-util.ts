@@ -28,12 +28,13 @@ function mapboxTerrainToGrid(
       const g = png.get(x, yc, 1);
       const b = png.get(x, yc, 2);
 
-      const height = r * 256 * 256 * interval + g * 256.0 * interval + b * interval + offset;
+      const height =
+        r * 256 * 256 * interval + g * 256.0 * interval + b * interval + offset;
 
-      if (r === 0 && g === 0 && b === 0 && typeof noDataHeight === 'number') {
-        terrain[y * gridSize + x] = noDataHeight
+      if (r === 0 && g === 0 && b === 0 && typeof noDataHeight === "number") {
+        terrain[y * gridSize + x] = noDataHeight;
       } else {
-        terrain[y * gridSize + x] = height
+        terrain[y * gridSize + x] = height;
       }
     }
   }
@@ -151,7 +152,11 @@ export interface QuantizedMeshOptions {
   ellipsoidRadius: number;
 }
 
-function createQuantizedMeshData(tile: any, mesh: any, tileSize: number): TerrainWorkerOutput {
+function createQuantizedMeshData(
+  tile: any,
+  mesh: any,
+  tileSize: number
+): TerrainWorkerOutput {
   const xvals = [];
   const yvals = [];
   const heightMeters = [];
@@ -233,13 +238,20 @@ export interface TerrainWorkerInput extends QuantizedMeshOptions {
   /**
    * Terrain-RGB nodata fill
    */
-  noDataHeight?: number
+  noDataHeight?: number;
 }
 
 let martini: Martini;
 
 function decodeTerrain(parameters: TerrainWorkerInput) {
-  const { imageData, tileSize = 256, errorLevel, interval, offset, noDataHeight } = parameters;
+  const {
+    imageData,
+    tileSize = 256,
+    errorLevel,
+    interval,
+    offset,
+    noDataHeight,
+  } = parameters;
 
   const pixels = ndarray(
     new Uint8Array(imageData),

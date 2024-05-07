@@ -7,8 +7,8 @@ export default class Martini {
   constructor(gridSize = 257) {
     this.gridSize = gridSize;
     const tileSize = gridSize - 1;
-    if (tileSize & (tileSize - 1)) throw new Error(
-      `Expected grid size to be 2^n+1, got ${gridSize}.`);
+    if (tileSize & (tileSize - 1))
+      throw new Error(`Expected grid size to be 2^n+1, got ${gridSize}.`);
 
     this.numTriangles = tileSize * tileSize * 2 - 2;
     this.numParentTriangles = this.numTriangles - tileSize * tileSize;
@@ -21,7 +21,12 @@ export default class Martini {
     // get triangle coordinates from its index in an implicit binary tree
     for (let i = 0; i < this.numTriangles; i++) {
       let id = i + 2;
-      let ax = 0, ay = 0, bx = 0, by = 0, cx = 0, cy = 0;
+      let ax = 0,
+        ay = 0,
+        bx = 0,
+        by = 0,
+        cx = 0,
+        cy = 0;
       if (id & 1) {
         bx = by = cx = tileSize; // bottom-left triangle
       } else {
@@ -31,14 +36,21 @@ export default class Martini {
         const mx = (ax + bx) >> 1;
         const my = (ay + by) >> 1;
 
-        if (id & 1) { // left half
-          bx = ax; by = ay;
-          ax = cx; ay = cy;
-        } else { // right half
-          ax = bx; ay = by;
-          bx = cx; by = cy;
+        if (id & 1) {
+          // left half
+          bx = ax;
+          by = ay;
+          ax = cx;
+          ay = cy;
+        } else {
+          // right half
+          ax = bx;
+          ay = by;
+          bx = cx;
+          by = cy;
         }
-        cx = mx; cy = my;
+        cx = mx;
+        cy = my;
       }
       const k = i * 4;
       this.coords[k + 0] = ax;
@@ -59,8 +71,12 @@ class Tile {
   errors: Float32Array;
   constructor(terrain: string | any[], martini: any) {
     const size = martini.gridSize;
-    if (terrain.length !== size * size) throw new Error(
-      `Expected terrain data of length ${size * size} (${size} x ${size}), got ${terrain.length}.`);
+    if (terrain.length !== size * size)
+      throw new Error(
+        `Expected terrain data of length ${
+          size * size
+        } (${size} x ${size}), got ${terrain.length}.`
+      );
 
     this.terrain = terrain;
     this.martini = martini;
@@ -69,7 +85,12 @@ class Tile {
   }
 
   update() {
-    const { numTriangles, numParentTriangles, coords, gridSize: size } = this.martini;
+    const {
+      numTriangles,
+      numParentTriangles,
+      coords,
+      gridSize: size,
+    } = this.martini;
     const { terrain, errors } = this;
 
     // iterate over all possible triangles, starting from the smallest level
@@ -85,16 +106,22 @@ class Tile {
       const cy = my + ax - mx;
 
       // calculate error in the middle of the long edge of the triangle
-      const interpolatedHeight = (terrain[ay * size + ax] + terrain[by * size + bx]) / 2;
+      const interpolatedHeight =
+        (terrain[ay * size + ax] + terrain[by * size + bx]) / 2;
       const middleIndex = my * size + mx;
       const middleError = Math.abs(interpolatedHeight - terrain[middleIndex]);
 
       errors[middleIndex] = Math.max(errors[middleIndex], middleError);
 
-      if (i < numParentTriangles) { // bigger triangles; accumulate error with children
+      if (i < numParentTriangles) {
+        // bigger triangles; accumulate error with children
         const leftChildIndex = ((ay + cy) >> 1) * size + ((ax + cx) >> 1);
         const rightChildIndex = ((by + cy) >> 1) * size + ((bx + cx) >> 1);
-        errors[middleIndex] = Math.max(errors[middleIndex], errors[leftChildIndex], errors[rightChildIndex]);
+        errors[middleIndex] = Math.max(
+          errors[middleIndex],
+          errors[leftChildIndex],
+          errors[rightChildIndex]
+        );
       }
     }
   }
@@ -117,12 +144,22 @@ class Tile {
     // - countElements: find used vertices (and assign each an index), and count triangles (for minimum allocation)
     // - processTriangle: fill the allocated vertices & triangles typed arrays
 
-    function countElements(ax: number, ay: number, bx: number, by: number, cx: number, cy: number) {
+    function countElements(
+      ax: number,
+      ay: number,
+      bx: number,
+      by: number,
+      cx: number,
+      cy: number
+    ) {
       const mx = (ax + bx) >> 1;
       const my = (ay + by) >> 1;
 
       const legLength = Math.abs(ax - cx) + Math.abs(ay - cy);
-      if ((legLength > 1 && errors[my * size + mx] > maxError) || legLength > maxScale) {
+      if (
+        (legLength > 1 && errors[my * size + mx] > maxError) ||
+        legLength > maxScale
+      ) {
         countElements(cx, cy, ax, ay, mx, my);
         countElements(bx, by, cx, cy, mx, my);
       } else {
@@ -139,16 +176,25 @@ class Tile {
     const triangles = new Uint32Array(numTriangles * 3);
     let triIndex = 0;
 
-    function processTriangle(ax: number, ay: number, bx: number, by: number, cx: number, cy: number) {
+    function processTriangle(
+      ax: number,
+      ay: number,
+      bx: number,
+      by: number,
+      cx: number,
+      cy: number
+    ) {
       const mx = (ax + bx) >> 1;
       const my = (ay + by) >> 1;
 
       const legLength = Math.abs(ax - cx) + Math.abs(ay - cy);
-      if ((legLength > 1 && errors[my * size + mx] > maxError) || legLength > maxScale) {
+      if (
+        (legLength > 1 && errors[my * size + mx] > maxError) ||
+        legLength > maxScale
+      ) {
         // triangle doesn't approximate the surface well enough; drill down further
         processTriangle(cx, cy, ax, ay, mx, my);
         processTriangle(bx, by, cx, cy, mx, my);
-
       } else {
         // add a triangle
         const a = indices[ay * size + ax] - 1;
